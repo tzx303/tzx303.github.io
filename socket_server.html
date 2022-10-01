@@ -11,23 +11,38 @@
 
 <div class="content">
 <pre>
-  from socket import *
 
-  sockfd = socket()
+import socket
 
-  server = ('192.168.101.7',12345)
-  sockfd.connect(server)
-  while True:
-      data = input('msg>>')
-      if data == 'quit':
-          break
-      sockfd.send(data.encode())
 
-      data = sockfd.recv(1024)
+sockfd = socket.socket()
 
-      print('server:',data.decode())
 
-  sockfd.close()
+sockfd.bind(('0.0.0.0',12345))
+while True:
+    sockfd.listen(5)
+
+    print('waiting')
+    try:
+        connfd,addr = sockfd.accept()
+
+        print('connect from',addr)
+    except KeyboardInterrupt:
+        print('exit')
+
+    while True:
+        data = connfd.recv(1024)
+        if not data:
+            break
+        print("收到：",data.decode())
+        m = input('回复什么信息:')
+
+        n = connfd.send(m.encode())
+
+        print('发送%d'%n)
+    connfd.close()
+
+sockfd.close()
 
 </pre>
 </div>
