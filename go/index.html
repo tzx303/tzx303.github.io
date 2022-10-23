@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>简易围棋</title>
+    <script src="core.js"></script>
+    <script src="index.js"></script>
+    <script src="sgf.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="ai/convnet-min.js"></script>
+    <script src="ai/net.js"></script>
+    <script src="ai/ai.js"></script>
+    <style>
+        body {
+            margin: 0 auto;
+            width:600px;
+        }
+        #weiqi {
+            border: 0px solid blue;
+            position: absolute;
+            top:50px;
+        }
+        #path {
+            position: absolute;
+            top:50px;
+            z-index: 200;
+        }
+        .btn{
+            background-color: #e65a39;
+            color: white;
+            padding: 0 4px;
+            margin: 0 2px;
+        }
+        .deleteBlue{
+            -moz-user-select: none; /*mozilar*/
+            -webkit-user-select: none; /*webkit*/
+            -ms-user-select: none; /*IE*/
+            user-select: none;
+        }
+
+    </style>
+</head>
+<body class="deleteBlue">
+<canvas id="weiqi" width="600" height="600"></canvas>
+<canvas id="path" width="600" height="600"></canvas>
+<br>
+<span class="btn deleteBlue" id="start">&lt;&lt;</span>
+<span class="btn deleteBlue" id="back"> &lt; </span>
+<span class="btn deleteBlue" id="next"> &gt; </span>
+<span class="btn deleteBlue" id="end">&gt;&gt;</span>
+<span class="btn deleteBlue" id="new">显示手数</span>
+<span class="btn deleteBlue" id="auto">自动</span>
+<span class="btn deleteBlue" >黑:<span id="blackUp">0</span></span>
+<span class="btn deleteBlue" >白:<span id="whiteUp">0</span></span>
+<span class="btn deleteBlue" id="ai">神之一手</span>
+<span class="btn deleteBlue" id="lock">锁定</span>
+</body>
+<script>
+    $(function () {
+        draw();
+        $(document).on("click","#back",function () {
+            backStep();
+            draw();
+        });
+        $(document).on("click","#next",function () {
+            nextStep();
+            draw();
+        });
+        $(document).on("click","#start",function () {
+            startStep();
+            draw();
+        });
+        $(document).on("click","#end",function () {
+            endStep();
+            draw();
+        });
+        $(document).on("click","#new",function () {
+            if(move_show_flag){
+                $(this).text("显示手数")
+            }else{
+                $(this).text("隐藏手数")
+            }
+            move_show_flag=!move_show_flag;
+            draw();
+        });
+        $(document).on("click","#ai",function () {
+            convMove();
+        });
+
+        let autoFlag;
+        $(document).on("click","#auto",function () {
+            autoNext=!autoNext;
+            let that=$(this);
+            if(autoNext){
+                autoFlag=setInterval(function () {
+                    if(jumpPointer+1>record.length-1){
+                        autoNext=false;
+                        that.text("自动")
+                        clearInterval(autoFlag);
+                        return;
+                    }
+                    nextStep();
+                    draw();
+                    if(jumpPointer+1>record.length-1){
+                        autoNext=false;
+                        that.text("自动")
+                        clearInterval(autoFlag);
+                        return;
+                    }
+                },1000)
+                that.text("停止")
+            }else{
+                clearInterval(autoFlag);
+                that.text("自动")
+            }
+
+        })
+
+        $("body").bind("contextmenu", function () {
+            backStep();
+            draw();
+            return false;
+        });
+        let click=0;
+        $(document).on("click","#lock",function () {
+            console.log(click)
+            switch (click) {
+                case 0:
+                    $(this).text("锁定黑色")
+                    lockQiRole=qiType.black;
+                    click++;
+                    break;
+                case 1:
+                    $(this).text("锁定白色")
+                    lockQiRole=qiType.white;
+                    click++;
+                    break;
+                case 2:
+                    $(this).text("白黑")
+                    whoIsPlay=qiType.white
+                    lockQiRole=undefined;
+                    click++;
+                    break;
+                case 3:
+                    $(this).text("黑白")
+                    whoIsPlay=qiType.black
+                    lockQiRole=undefined;
+                    click=0;
+                    break;
+            }
+        });
+    })
+    function importSGF(sgf) {
+        let record=parser(sgf);
+        for (let i=0;i<record.length;i++){
+            play(record[i][0],record[i][1],record[i][2])
+        }
+        draw();
+    }
+</script>
+</html>
