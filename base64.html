@@ -1,0 +1,15 @@
+<html>
+    <head>
+      <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+      <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    </head>
+  <body>
+    <h1>base64</h1>
+    <div id="plot"></div>
+    <py-script output="plot">
+      while True:
+        sd = input('请输入base64加密字符:').encode()
+        print(base64.b64decode(sd).decode())
+    </py-script>
+  </body>
+</html>
