@@ -12,6 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="/send.js"></script>
 </head>
 <body>
 
