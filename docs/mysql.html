@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>mysql</title>
+    <script src="/send.js"></script>
+</head>
+<body>
+  <h3>
+    <pre>
+1，连接mysql
+
+格式： mysql -h主机地址 -u用户名 －p用户密码
+
+a, 连接到本地MYSQL
+
+首先打开DOS窗口，然后进入目录mysql\bin，再键入命令mysql -u root -p，
+
+回车后提示你输密码。 MYSQL的提示符是： mysql> 。(默认root用户没有密码)
+
+b,连接到远程主机上的MYSQL
+
+假设远程主机的IP为：218.105.110.116，用户名为root,密码为abcd123456。
+
+则键入以下命令：mysql -h218.105.110.116 -u root -p abcd123456；(注：u与root之间可以不用加空格，其它也一样)。
+
+2, 启动mysql服务
+
+net start mysql
+
+3，停止mysql服务
+
+net stop mysql
+
+4，查询端口是否冲突
+
+netstat –na | findstr 8080 查看被监听的端口 , findstr用于查找后面的端口是否存在。
+
+5，退出mysql
+
+quit或者exit退出
+
+6，修改密码：
+
+格式：mysqladmin -u用户名 -p旧密码 password 新密码
+
+例如给root修改密码：
+
+mysqladmin -u root -p ab12 password djg345
+
+二、显示命令
+
+1．显示当前数据库服务器中的数据库列表
+
+mysql> SHOW DATABASES；
+
+2．显示某个数据库中的数据表
+
+mysql> USE 库名；//使用某个库
+
+mysql> SHOW TABLES；//列出库中所有的表
+
+3．显示数据表的结构
+
+mysql> DESCRIBE 表名；
+
+4．建立数据库
+
+mysql> CREATE DATABASE 库名；。
+
+5．建立数据表
+
+mysql> USE 库名。
+
+mysql> CREATE TABLE 表名 (字段名 VARCHAR(20), 字段名 CHAR(1))；。
+
+6．删除数据库
+
+mysql> DROP DATABASE 库名；。
+
+7．删除数据表
+
+mysql> DROP TABLE 表名；。
+
+8．将表中记录清空
+
+mysql> DELETE FROM 表名；。
+
+9．显示表中的记录
+
+mysql> SELECT * FROM 表名；。
+
+10．往表中插入记录
+
+mysql> INSERT INTO 表名 VALUES (”hyq”,”M”)；。
+
+11．更新表中数据
+
+mysql-> UPDATE 表名 SET 字段名1=’a',字段名2=’b’ WHERE 字段名3=’c'；。
+
+12．用文本方式将数据装入数据表中
+
+mysql> LOAD DATA LOCAL INFILE “D:/mysql.txt” INTO TABLE 表名；。
+
+13．导入.sql文件命令
+
+mysql> USE 数据库名；。
+
+mysql> SOURCE d:/mysql.sql；。
+
+14．命令行修改root密码
+
+mysql> UPDATE mysql.user SET password=PASSWORD(’新密码’) WHERE User=’root’；。
+
+mysql> FLUSH PRIVILEGES；。
+
+15．显示use的数据库名
+
+mysql> SELECT DATABASE()；。
+
+16．显示当前的user
+
+mysql> SELECT USER()；。
+    </pre>
+  </h3>
+</body>
+</html>
