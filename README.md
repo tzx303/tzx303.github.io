@@ -13,6 +13,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <script src="/send.js"></script>
+    <link rel="shortcut icon" href="/myapp.ico">
 </head>
 <body>
 
